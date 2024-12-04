@@ -1,0 +1,63 @@
+[package]
+name = "bevy_gaussian_oxr_simple"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = []
+pcvr = []
+native = []
+
+[dependencies]
+bevy = "0.14.2"
+bevy_embedded_assets = "0.11.0"
+bevy_egui = { version = "0.30.0", features = ["render"] }
+bevy_mod_picking = "0.20.1"
+egui-aesthetix = { git = "https://github.com/thebashpotato/egui-aesthetix.git", branch = "dependabot/cargo/egui-0.29", features = ["all_themes"] }
+bevy_panorbit_camera = "0.20.0"
+bevy-inspector-egui = "0.27.0"
+bevy_mod_openxr = { git = "https://github.com/awtterpip/bevy_oxr.git" }
+bevy_mod_xr = { git = "https://github.com/awtterpip/bevy_oxr.git" }
+bevy_xr_utils = { git = "https://github.com/awtterpip/bevy_oxr.git" }
+
+[dependencies.bevy_gaussian_splatting]
+version = "2.7.5"
+default-features = false
+features = ["buffer_storage", "planar", "f16", "io_ply", "io_flexbuffers", "sort_rayon", "sh0", "viewer", "web"]
+
+[dependencies.bevy-suis]
+git = "https://github.com/MiniMinerX/bevy-suis.git"
+branch = "furthur_work_rollback"
+
+[dependencies.bevy_spatial_egui]
+git = "https://github.com/MiniMinerX/bevy_spatial_egui.git"
+branch = "my_suis"
+
+[dependencies.bevy_suis_lasers]
+git = "https://github.com/MiniMinerX/nexus-vr.git"
+
+
+
+[lib]
+name = "bevy_gaussian_oxr_simple"
+crate-type = ["rlib", "cdylib"]
+
+[[bin]]
+name = "bevy_gaussian_oxr_simple_bin"
+path = "src/lib.rs"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+
+
+# Enable max optimizations for dependencies, but not for our code:
+[profile.dev.package."*"]
+opt-level = 3
+
+# Enable only a small amount of optimization in debug mode
+[profile.dev]
+opt-level = 2
+debug = true
